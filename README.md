@@ -48,7 +48,8 @@ In particular, you should:
 
 - **What is git? How do I copy files with it?** [Git](https://cs-uob.github.io/COMS10012/exercises/part1/git/index.html) is a version control system, it allows you to keep track of your changes. When we suggest loading files to AWS, we are suggesting that you should use a git repository and pushing your changes to the remote repository, then cloning/pulling these changes to your AWS instance. GitHub, GitLab and many others are services that allow for this process. Still stuck? You can try using [SCP](https://linuxize.com/post/how-to-use-scp-command-to-securely-transfer-files/) - we do not recommend this though. You should be familiar with git at this point.
   
-- Alternatively, **for copying files** consider using scp. The command to copy `my_stuff.zip` into the home directory on your EC2 instance will be sometheing like `scp -i ~/.ssh/keypair.pem ec2-user@54.210.24.40:~ my_stuff.zip`. Replace the IP address with your IP and `my_stuff.zip` with the file you want to copy. This method is a frustrating as you will need to zip and unzip stuff all the time.
+- Alternatively, **for copying files** consider using scp. The command to copy `my_stuff.zip` into the home directory on your EC2 instance will be something like `scp -i ~/.ssh/keypair.pem my_stuff.zip ec2-user@54.210.24.40:~`. Replace the IP address with your IP and `my_stuff.zip` with the file you want to copy. This method is a frustrating as you will need to zip and unzip stuff all the time.
+
 
 - Another option is to use a GUI based FTP program. (WinSCP)[https://winscp.net/eng/index.php] is a great option for Windows users. I cannot recommend FileZilla in good faith FileZilla as **some vendors bundle it with Malware!!** However, I assume if you install with apt from the Ubuntu repos it will be ok (have not tested this!)
 
