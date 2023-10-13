@@ -46,7 +46,7 @@ In particular, you should:
 
 - **I use `go run client.go` and get `panic: runtime error: invalid memory address or nil pointer dereference`:** You are not passing in the IP address of the server to the client. Run it like this `go run client.go -ip ip:port` replacing `ip` and `port` with the appropriate values.
 
-- **What is git? How do I copy files with it?** [Git](https://www.ole.bris.ac.uk/bbcswebdav/users/csxdb/pub/git/index.html) is a version control system, it allows you to keep track of your changes. When we suggest loading files to AWS, we are suggesting that you should use a git repository and pushing your changes to the remote repository, then cloning/pulling these changes to your AWS instance. GitHub, GitLab and many others are services that allow for this process. Still stuck? You can try using [SCP](https://linuxize.com/post/how-to-use-scp-command-to-securely-transfer-files/) - we do not recommend this though. You should be familiar with git at this point.
+- **What is git? How do I copy files with it?** [Git](https://cs-uob.github.io/COMS10012/exercises/part1/git/index.html) is a version control system, it allows you to keep track of your changes. When we suggest loading files to AWS, we are suggesting that you should use a git repository and pushing your changes to the remote repository, then cloning/pulling these changes to your AWS instance. GitHub, GitLab and many others are services that allow for this process. Still stuck? You can try using [SCP](https://linuxize.com/post/how-to-use-scp-command-to-securely-transfer-files/) - we do not recommend this though. You should be familiar with git at this point.
 
 
 ## 2: Using RPC - Secret Strings :red_circle::white_circle::white_circle::white_circle::white_circle:
