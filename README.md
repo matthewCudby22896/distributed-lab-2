@@ -31,7 +31,7 @@ In particular, you should:
 
 + create two t2.micro instances, ([guide](https://github.com/UoB-CSA/setup-guides/blob/master/aws/create-instance.md))
 + make sure Go is installed on your instances ([guide](https://github.com/UoB-CSA/setup-guides/blob/master/go-install/aws.md#setup-instructions-for-aws-ubuntu-2004-lts-focal))
-+ load your client/server code onto the instances (e.g., via [git](https://www.ole.bris.ac.uk/bbcswebdav/users/csxdb/pub/git/index.html))
++ load your client/server code onto the instances (e.g., via [git](https://github.com/UoB-CSA/setup-guides/blob/master/aws/access-instance.md#coping-files))
 + open ports to allow communication between instances ([guide](https://github.com/UoB-CSA/setup-guides/blob/master/aws/ports.md))
 + start your server running on one instance ([ssh guide](https://github.com/UoB-CSA/setup-guides/blob/master/aws/access-instance.md))
 + connect to your server with your client on another instance
