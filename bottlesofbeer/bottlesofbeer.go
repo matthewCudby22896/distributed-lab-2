@@ -34,6 +34,9 @@ func main() {
 	nextIP = flag.String("nextIP", "", "port that this instance calls")
 	flag.Parse()
 	fmt.Println("bottles: " + strconv.Itoa(*bottles))
+	fmt.Println("buddyNum: " + *buddyNum)
+	fmt.Println("nextIP: " + *nextIP)
+
 	//Starts server which is taking connections via gate 8030
 
 	listener, err := net.Listen("tcp", ":8030")
