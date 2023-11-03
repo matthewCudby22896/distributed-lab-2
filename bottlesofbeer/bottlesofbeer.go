@@ -17,6 +17,14 @@ import (
 var nextIP *string
 var buddyNum *string
 
+type Request struct {
+	numBottles int
+}
+type Response struct {
+	finished bool
+}
+type Operations struct{}
+
 func main() {
 	//FLAGS
 	buddyNum = flag.String("buddy", "NIL", "Number in sequence of instances")
@@ -73,14 +81,6 @@ func main() {
 	}
 
 }
-
-type Request struct {
-	numBottles int
-}
-type Response struct {
-	finished bool
-}
-type Operations struct{}
 
 func (s *Operations) callNextInChain(req *Request, res *Response) error {
 	if req.numBottles == 0 {
