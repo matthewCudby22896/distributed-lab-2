@@ -49,9 +49,9 @@ func main() {
 	}()
 
 	//Register Operations struct and it's methods with rpc
-	err = rpc.Register(new(Operations))
+	err = rpc.RegisterName("Operations", new(Operations))
 	if err != nil {
-		log.Fatal("Error with net.Register()")
+		log.Fatal("Error with rpc.RegisterName()")
 	}
 
 	//Constantly be listening for remote calls
@@ -82,7 +82,7 @@ func main() {
 
 }
 
-func (s *Operations) callNextInChain(req Request, res *Response) error {
+func (s *Operations) callNextInChain(req *Request, res *Response) error {
 	if req.numBottles == 0 {
 		fmt.Println("No bottles of beer on the wall :D")
 		os.Exit(0)
