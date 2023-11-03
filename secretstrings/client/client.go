@@ -85,9 +85,9 @@ func main() {
 
 }
 func worker(c Connection, aggChan chan Output) {
+	fmt.Println("Worker Started")
 	for {
 		input := <-c.In
-
 		if input == "QUIT" {
 			c.Out <- Output{}
 			return
