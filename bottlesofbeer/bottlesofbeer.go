@@ -63,6 +63,7 @@ func main() {
 			rpc.Accept(listener)
 		}
 		wg.Done()
+		return
 	}()
 
 	//Start if not already started
@@ -85,6 +86,7 @@ func main() {
 		}
 	}
 	wg.Wait()
+	return
 }
 
 func (s *Operations) CallNextInChain(req *Request, res *Response) error {
