@@ -23,8 +23,8 @@ type Output struct {
 func main() {
 	//Private IP addresses of other aws instances
 	serverIP := []string{
+		"18.206.200.153:8030",
 		"18.232.83.36:8030",
-		"54.166.137.97:8030",
 	}
 
 	var connections []Connection
@@ -87,8 +87,22 @@ func main() {
 		fmt.Println("Output: " + output.Result)
 	}
 
-	//Send close message to
+	var output Output
+	var notEmpty bool = false
+	//Empty out aggregate channel
+	for notEmpty {
+		select {
+		case output = <-aggChan:
+			fmt.Println("Output: " + output.Result)
+		default:
+			notEmpty = false
+		}
+
+	}
+	fmt.Println("Aggregate channel emptied...")
+	//Send close message to each connection
 	for _, c := range connections {
+		fmt.Println(c)
 		c.In <- "QUIT"
 		<-c.Out
 	}
