@@ -30,15 +30,14 @@ func main() {
 	//FLAGS
 	buddyNum = flag.String("buddy", "NIL", "Number in sequence of instances")
 	bottles := flag.Int("n", 0, "Bottles of Beer (launches song if not 0)")
-	port := flag.String("l_address", "8030", "port that this instance needs to listen on")
+	//port := flag.String("l_address", "8030", "port that this instance needs to listen on")
 	nextIP = flag.String("c_address", "", "port that this instance calls")
 	flag.Parse()
 
-	//TODO: Up to you from here! Remember, you'll need to both listen for
-	//Get connection to next client in chain...
-
 	//Starts server which is taking connections via gate 8030
-	listener, err := net.Listen("tcp", ":"+*port)
+
+	listener, err := net.Listen("tcp", ":8030")
+	fmt.Println("Listening on port :8030")
 	if err != nil {
 		log.Fatal("Error with net.Listen()")
 	}
@@ -60,6 +59,7 @@ func main() {
 	wg.Add(1)
 	go func() {
 		for {
+			fmt.Println("Listening on Listener...")
 			rpc.Accept(listener)
 		}
 		wg.Done()
@@ -78,9 +78,11 @@ func main() {
 		request := Request{numBottles: *bottles}
 		response := Response{}
 		err = client.Call("Operations.CallNextInChain", request, response)
+		fmt.Println("Attempted RPC...")
 		if err != nil {
 			log.Fatal("Error with Call()")
 		}
+
 		if response.finished {
 			defer os.Exit(0)
 		}
@@ -103,10 +105,12 @@ func (s *Operations) CallNextInChain(req *Request, res *Response) error {
 	if err != nil {
 		log.Fatal("Error with Dial()")
 	}
+	fmt.Println("Connection made to client...")
 
 	//Make RPC to next in chain
 	response := Response{}
-	err = client.Call("Operations.callNextInChain", Request{numBottles: req.numBottles - 1}, response)
+	err = client.Call("Operations.CallNextInChain", Request{numBottles: req.numBottles - 1}, response)
+	fmt.Println("Attempted RPC...")
 	if err != nil {
 		log.Fatal("Error with Call()")
 	}
