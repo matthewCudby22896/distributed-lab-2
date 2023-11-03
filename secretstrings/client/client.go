@@ -30,6 +30,7 @@ func main() {
 	//Open file & initialise scanner
 	file, err := os.Open("wordlist")
 	if err != nil {
+		fmt.Println(err)
 		log.Fatal("Error with os.Open()")
 	}
 	scanner := bufio.NewScanner(file)
@@ -40,6 +41,7 @@ func main() {
 	for _, ip := range serverIP {
 		client, err := rpc.Dial("tcp", ip)
 		if err != nil {
+			fmt.Println(err)
 			log.Fatal("Error with Dial()")
 		}
 		fmt.Println("Connection made.")
@@ -62,7 +64,8 @@ func main() {
 		go worker(c, aggChan)
 		scanner.Scan()
 		//Send first piece of work
-		c.In <- scanner.Text()
+		text := scanner.Text()
+		c.In <- text
 	}
 
 	//Process all words in text doc
@@ -87,10 +90,14 @@ func worker(c Connection, aggChan chan Output) {
 
 		if input == "QUIT" {
 			c.Out <- Output{}
+			return
 		}
 
 		request := stubs.Request{Message: input}
 		response := new(stubs.Response)
+
+		fmt.Println("Sending:" + request.Message)
+
 		c.Client.Call(stubs.PremiumReverseHandler, request, response)
 		output := Output{In: c.In, Result: response.Message}
 		aggChan <- output
