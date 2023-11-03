@@ -44,7 +44,7 @@ func main() {
 			fmt.Println(err)
 			log.Fatal("Error with Dial()")
 		}
-		fmt.Println("Connection made.")
+		fmt.Println("Connection made...")
 
 		connection := Connection{client, make(chan string), make(chan Output)}
 		connections = append(connections, connection)
@@ -53,7 +53,11 @@ func main() {
 	//Close all connections when method has finished
 	defer func() {
 		for _, connection := range connections {
-			connection.Client.Close()
+			err := connection.Client.Close()
+			if err != nil {
+				fmt.Println(err)
+				log.Fatal("Error with Close()")
+			}
 		}
 	}()
 
@@ -85,9 +89,10 @@ func main() {
 
 }
 func worker(c Connection, aggChan chan Output) {
-	fmt.Println("Worker Started")
+	fmt.Println("Worker Started...")
 	for {
 		input := <-c.In
+		fmt.Println("input received")
 		if input == "QUIT" {
 			c.Out <- Output{}
 			return
@@ -98,7 +103,12 @@ func worker(c Connection, aggChan chan Output) {
 
 		fmt.Println("Sending:" + request.Message)
 
-		c.Client.Call(stubs.PremiumReverseHandler, request, response)
+		err := c.Client.Call(stubs.PremiumReverseHandler, request, response)
+		if err != nil {
+			fmt.Println(err)
+			log.Fatal("Error with Call()")
+		}
+
 		output := Output{In: c.In, Result: response.Message}
 		aggChan <- output
 	}
