@@ -108,4 +108,5 @@ func (s *Operations) callNextInChain(req Request, res *Response) error {
 		res.finished = true
 		defer os.Exit(0)
 	}
+	return nil
 }
