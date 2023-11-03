@@ -77,7 +77,7 @@ func main() {
 
 		request := Request{numBottles: *bottles}
 		response := Response{}
-		err = client.Call("Operations.CallNextInChain", request, *response)
+		err = client.Call("Operations.CallNextInChain", request, response)
 		fmt.Println("Attempted RPC...")
 		if err != nil {
 			log.Fatal("Error with Call()")
@@ -85,7 +85,7 @@ func main() {
 
 		if response.finished {
 			defer os.Exit(0)
-		}w
+		}
 	}
 	wg.Wait()
 	return
