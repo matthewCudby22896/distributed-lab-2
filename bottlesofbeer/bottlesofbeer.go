@@ -33,7 +33,7 @@ func main() {
 	//port := flag.String("l_address", "8030", "port that this instance needs to listen on")
 	nextIP = flag.String("nextIP", "", "port that this instance calls")
 	flag.Parse()
-
+	fmt.Println("bottles: " + strconv.Itoa(*bottles))
 	//Starts server which is taking connections via gate 8030
 
 	listener, err := net.Listen("tcp", ":8030")
@@ -77,7 +77,7 @@ func main() {
 
 		request := Request{numBottles: *bottles}
 		response := Response{}
-		err = client.Call("Operations.CallNextInChain", request, response)
+		err = client.Call("Operations.CallNextInChain", request, *response)
 		fmt.Println("Attempted RPC...")
 		if err != nil {
 			log.Fatal("Error with Call()")
@@ -85,7 +85,7 @@ func main() {
 
 		if response.finished {
 			defer os.Exit(0)
-		}
+		}w
 	}
 	wg.Wait()
 	return
