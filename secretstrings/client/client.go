@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"log"
 	"net/rpc"
 	"os"
 	"uk.ac.bris.cs/distributed2/secretstrings/stubs"
@@ -27,12 +28,22 @@ func main() {
 	connections := make([]Connection, len(serverIP))
 
 	//Open file & initialise scanner
-	file, _ := os.Open("wordlist")
+	file, err := os.Open("wordlist")
+	if err != nil {
+		log.Fatal("Error with os.Open()")
+	}
 	scanner := bufio.NewScanner(file)
+
+	fmt.Println("FILE OPENED")
 
 	//Get connection to every aws instance
 	for _, ip := range serverIP {
-		client, _ := rpc.Dial("tcp", ip)
+		client, err := rpc.Dial("tcp", ip)
+		if err != nil {
+			log.Fatal("Error with Dial()")
+		}
+		fmt.Println("Connection made.")
+
 		connection := Connection{client, make(chan string), make(chan Output)}
 		connections = append(connections, connection)
 	}
