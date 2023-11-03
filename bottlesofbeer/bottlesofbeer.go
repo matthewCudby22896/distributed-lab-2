@@ -8,6 +8,7 @@ import (
 	"net/rpc"
 	"os"
 	"strconv"
+	"sync"
 	//	"net/rpc"
 	//	"fmt"
 	//	"time"
@@ -55,10 +56,13 @@ func main() {
 	}
 
 	//Constantly be listening for remote calls
+	wg := sync.WaitGroup{}
+	wg.Add(1)
 	go func() {
 		for {
 			rpc.Accept(listener)
 		}
+		wg.Done()
 	}()
 
 	//Start if not already started
@@ -80,7 +84,7 @@ func main() {
 			defer os.Exit(0)
 		}
 	}
-
+	wg.Wait()
 }
 
 func (s *Operations) CallNextInChain(req *Request, res *Response) error {
