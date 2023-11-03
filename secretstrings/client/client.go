@@ -2,41 +2,87 @@ package main
 
 import (
 	"bufio"
-	"flag"
 	"fmt"
 	"net/rpc"
 	"os"
 	"uk.ac.bris.cs/distributed2/secretstrings/stubs"
 )
 
+type Connection struct {
+	Client *rpc.Client
+	In     chan string
+	Out    chan Output
+}
+
+type Output struct {
+	In     chan string
+	Result string
+}
+
 func main() {
-	server := flag.String("server", "127.0.0.1:8030", "IP:port string to connect to")
-	flag.Parse()
-	fmt.Println("Server: ", *server)
+	//Private IP addresses of other aws instances
+	serverIP := []string{
+		"172.31.26.156:8030",
+		"172.31.17.34:8030",
+		"172.31.16.247:8030"}
 
-	//Need to connect to RPC server and send the request
-	client, _ := rpc.Dial("tcp", *server)
-	defer client.Close()
+	connections := make([]Connection, len(serverIP))
 
-	/*request := stubs.Request{Message: "Hello"}
-	response := new(stubs.Response)
-
-	client.Call(stubs.PremiumReverseHandler, request, response)
-	fmt.Println("Responded: " + response.Message)*/
-
-	//Read word from list
-	//Send them off to client to be reversed
-
+	//Open file & initialise scanner
 	file, _ := os.Open("wordlist")
 	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		text := scanner.Text()
-		//fmt.Println(text)
-		request := stubs.Request{Message: text}
-		response := new(stubs.Response)
 
-		//Call() waits for it's completion
-		client.Call(stubs.PremiumReverseHandler, request, response)
-		fmt.Println("Responded: " + response.Message)
+	//Get connection to every aws instance
+	for _, ip := range serverIP {
+		client, _ := rpc.Dial("tcp", ip)
+		connection := Connection{client, make(chan string), make(chan Output)}
+		connections = append(connections, connection)
 	}
+
+	//Close all connections when method has finished
+	defer func() {
+		for _, connection := range connections {
+			connection.Client.Close()
+		}
+	}()
+
+	aggChan := make(chan Output)
+
+	//Start worker go routines
+	for _, c := range connections {
+		go worker(c, aggChan)
+		scanner.Scan()
+		//Send first piece of work
+		c.In <- scanner.Text()
+	}
+
+	//Process all words in text doc
+	for scanner.Scan() {
+		output := <- aggChan
+		output.In <- scanner.Text()
+		fmt.Println("Output: " + output.Result)
+	}
+
+	//Send close message to
+	for _, c := range connections{
+		c.In <- "QUIT"
+		<- c.Out
+	}
+
+	fmt.Println("FINISHED")
+
+}
+func worker(c Connection, aggChan chan Output) {
+	for {
+		input := <- c.In
+
+		if input == "QUIT" {c.Out <- Output{}}
+
+		request := stubs.Request{Message: input}
+		response := new(stubs.Response)
+		c.Client.Call(stubs.PremiumReverseHandler, request, response)
+		output := Output{In: c.In, Result: response.Message}
+		aggChan <- output
+	}
+}
 }
