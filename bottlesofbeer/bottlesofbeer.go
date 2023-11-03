@@ -82,7 +82,7 @@ type Response struct {
 }
 type Operations struct{}
 
-func (s *Operations) callNextInChain(req Request, res *Response) {
+func (s *Operations) callNextInChain(req Request, res *Response) error {
 	if req.numBottles == 0 {
 		fmt.Println("No bottles of beer on the wall :D")
 		os.Exit(0)
