@@ -65,7 +65,7 @@ func main() {
 			fmt.Println("Listening on Listener...")
 			rpc.Accept(listener)
 		}
-		wg.Done()
+		wg.Done()Dial
 		return
 	}()
 
@@ -83,7 +83,9 @@ func main() {
 		err = client.Call("Operations.CallNextInChain", request, response)
 		fmt.Println("Attempted RPC...")
 		if err != nil {
+
 			log.Fatal("Error with Call()")
+			fmt.Println(err)
 		}
 
 		if response.finished {
