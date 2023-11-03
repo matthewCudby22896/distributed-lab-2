@@ -69,6 +69,7 @@ func main() {
 		scanner.Scan()
 		//Send first piece of work
 		text := scanner.Text()
+		fmt.Println("text: " + text)
 		c.In <- text
 		fmt.Println("Input sent...")
 	}
