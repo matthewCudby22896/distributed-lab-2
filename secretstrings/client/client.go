@@ -22,9 +22,7 @@ type Output struct {
 func main() {
 	//Private IP addresses of other aws instances
 	serverIP := []string{
-		"172.31.26.156:8030",
-		"172.31.17.34:8030",
-		"172.31.16.247:8030"}
+		"18.232.83.36:8030"}
 
 	connections := make([]Connection, len(serverIP))
 
