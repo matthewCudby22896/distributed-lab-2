@@ -88,7 +88,7 @@ func main() {
 	}
 
 	var output Output
-	var notEmpty bool = false
+	var notEmpty = false
 	//Empty out aggregate channel
 	for notEmpty {
 		select {
@@ -130,7 +130,9 @@ func worker(c Connection, aggChan chan Output) {
 		err := c.Client.Call(stubs.PremiumReverseHandler, request, response)
 		if err != nil {
 			fmt.Println(err)
-			log.Fatal("Error with Call()")
+			log.Fatal("Error with Call()")if err != nil {
+		log.Fatal("Error with Call()")
+	}
 		}
 
 		output := Output{In: c.In, Result: response.Message}
