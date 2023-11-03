@@ -63,12 +63,13 @@ func main() {
 
 	//Start if not already started
 	//Get connection to next client in chain...
-	client, err := rpc.Dial("tcp", *nextIP)
-	if err != nil {
-		log.Fatal("Error with Dial()")
-	}
 
 	if *bottles != 0 {
+		client, err := rpc.Dial("tcp", *nextIP)
+		if err != nil {
+			log.Fatal("Error with Dial()")
+		}
+
 		request := Request{numBottles: *bottles}
 		response := Response{}
 		err = client.Call("Operations.callNextInChain", request, response)
