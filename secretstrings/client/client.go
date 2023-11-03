@@ -23,10 +23,12 @@ type Output struct {
 func main() {
 	//Private IP addresses of other aws instances
 	serverIP := []string{
-		"18.232.83.36:8030"}
+		"18.232.83.36:8030",
+		"54.166.137.97:8030",
+	}
 
-	connections := make([]Connection, len(serverIP))
-
+	var connections []Connection
+	fmt.Println(connections)
 	//Open file & initialise scanner
 	file, err := os.Open("wordlist")
 	if err != nil {
@@ -47,7 +49,9 @@ func main() {
 		fmt.Println("Connection made...")
 
 		connection := Connection{Client: client, In: make(chan string), Out: make(chan Output)}
+		fmt.Println(connection)
 		connections = append(connections, connection)
+		fmt.Println(connections)
 	}
 
 	//Close all connections when method has finished
@@ -64,6 +68,7 @@ func main() {
 	aggChan := make(chan Output, 10)
 
 	//Start worker go routines
+	fmt.Println(connections)
 	for _, c := range connections {
 		fmt.Println(c)
 		go worker(c, aggChan)
