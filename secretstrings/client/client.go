@@ -70,6 +70,7 @@ func main() {
 		//Send first piece of work
 		text := scanner.Text()
 		c.In <- text
+		fmt.Println("Input sent...")
 	}
 
 	//Process all words in text doc
@@ -89,7 +90,7 @@ func main() {
 
 }
 func worker(c Connection, aggChan chan Output) {
-	fmt.Println("Worker Started...")
+	fmt.Println("Worker started...")
 	for {
 		input := <-c.In
 		fmt.Println("Input received...")
