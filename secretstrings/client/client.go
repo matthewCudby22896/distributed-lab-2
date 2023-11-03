@@ -58,15 +58,15 @@ func main() {
 
 	//Process all words in text doc
 	for scanner.Scan() {
-		output := <- aggChan
+		output := <-aggChan
 		output.In <- scanner.Text()
 		fmt.Println("Output: " + output.Result)
 	}
 
 	//Send close message to
-	for _, c := range connections{
+	for _, c := range connections {
 		c.In <- "QUIT"
-		<- c.Out
+		<-c.Out
 	}
 
 	fmt.Println("FINISHED")
@@ -74,9 +74,11 @@ func main() {
 }
 func worker(c Connection, aggChan chan Output) {
 	for {
-		input := <- c.In
+		input := <-c.In
 
-		if input == "QUIT" {c.Out <- Output{}}
+		if input == "QUIT" {
+			c.Out <- Output{}
+		}
 
 		request := stubs.Request{Message: input}
 		response := new(stubs.Response)
@@ -84,5 +86,4 @@ func worker(c Connection, aggChan chan Output) {
 		output := Output{In: c.In, Result: response.Message}
 		aggChan <- output
 	}
-}
 }
