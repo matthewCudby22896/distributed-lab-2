@@ -46,7 +46,7 @@ func main() {
 		}
 		fmt.Println("Connection made...")
 
-		connection := Connection{client, make(chan string), make(chan Output)}
+		connection := Connection{client, make(chan string, 10), make(chan Output, 10)}
 		connections = append(connections, connection)
 	}
 
@@ -61,7 +61,7 @@ func main() {
 		}
 	}()
 
-	aggChan := make(chan Output)
+	aggChan := make(chan Output, 10)
 
 	//Start worker go routines
 	for _, c := range connections {
