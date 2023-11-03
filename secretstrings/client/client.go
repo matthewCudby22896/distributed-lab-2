@@ -65,6 +65,7 @@ func main() {
 
 	//Start worker go routines
 	for _, c := range connections {
+		fmt.Println(c)
 		go worker(c, aggChan)
 		scanner.Scan()
 		//Send first piece of work
