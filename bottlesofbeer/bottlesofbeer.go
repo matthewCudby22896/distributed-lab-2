@@ -28,10 +28,10 @@ type Operations struct{}
 
 func main() {
 	//FLAGS
-	buddyNum = flag.String("buddy", "NIL", "Number in sequence of instances")
-	bottles := flag.Int("n", 0, "Bottles of Beer (launches song if not 0)")
+	buddyNum = flag.String("buddyNum", "NIL", "Number in sequence of instances")
+	bottles := flag.Int("bottles", 0, "Bottles of Beer (launches song if not 0)")
 	//port := flag.String("l_address", "8030", "port that this instance needs to listen on")
-	nextIP = flag.String("c_address", "", "port that this instance calls")
+	nextIP = flag.String("nextIP", "", "port that this instance calls")
 	flag.Parse()
 
 	//Starts server which is taking connections via gate 8030
@@ -68,7 +68,7 @@ func main() {
 
 	//Start if not already started
 	//Get connection to next client in chain...
-
+	fmt.Println("bottles: " + strconv.Itoa(*bottles))
 	if *bottles != 0 {
 		client, err := rpc.Dial("tcp", *nextIP)
 		if err != nil {
