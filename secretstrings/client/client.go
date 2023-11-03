@@ -46,7 +46,7 @@ func main() {
 		}
 		fmt.Println("Connection made...")
 
-		connection := Connection{client, make(chan string, 10), make(chan Output, 10)}
+		connection := Connection{Client: client, In: make(chan string), Out: make(chan Output)}
 		connections = append(connections, connection)
 	}
 
@@ -92,6 +92,7 @@ func main() {
 }
 func worker(c Connection, aggChan chan Output) {
 	fmt.Println("Worker started...")
+	fmt.Println(c)
 	for {
 		input := <-c.In
 		fmt.Println("Input received...")
