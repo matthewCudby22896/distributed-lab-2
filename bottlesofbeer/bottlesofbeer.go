@@ -9,6 +9,7 @@ import (
 	"os"
 	"strconv"
 	"sync"
+	"time"
 	//	"net/rpc"
 	//	"fmt"
 	//	"time"
@@ -98,6 +99,7 @@ func main() {
 }
 
 func (s *Operations) CallNextInChain(req Request, res *Response) (err error) {
+	time.Sleep(time.Millisecond * 200)
 	if req.NumBottles == 0 {
 		fmt.Println("No bottles of beer on the wall :D")
 		os.Exit(0)
