@@ -77,7 +77,7 @@ func main() {
 
 		request := Request{numBottles: *bottles}
 		response := Response{}
-		err = client.Call("Operations.callNextInChain", request, response)
+		err = client.Call("Operations.CallNextInChain", request, response)
 		if err != nil {
 			log.Fatal("Error with Call()")
 		}
